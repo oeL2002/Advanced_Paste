@@ -45,11 +45,18 @@ internal sealed class TrayContext : ApplicationContext
 
         _trayIcon = new NotifyIcon
         {
-            Icon             = SystemIcons.Application,
+            Icon             = LoadEmbeddedIcon() ?? SystemIcons.Application,
             Text             = "Advanced Paste  (Ctrl+Alt+V)",
             Visible          = true,
             ContextMenuStrip = menu,
         };
+    }
+
+    private static Icon? LoadEmbeddedIcon()
+    {
+        var asm = System.Reflection.Assembly.GetExecutingAssembly();
+        using var stream = asm.GetManifestResourceStream("AdvancedPaste.assets.app.ico");
+        return stream is null ? null : new Icon(stream);
     }
 
     protected override void Dispose(bool disposing)
