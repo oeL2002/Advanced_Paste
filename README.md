@@ -1,4 +1,5 @@
 # Advanced Paste
+**Disclaimer:** This is a personal project provided as-is, without warranty or support. Use at your own risk.
 
 A small Windows tray app that types the clipboard as keystrokes instead of pasting it.
 
@@ -32,4 +33,7 @@ The output will be in `bin/Release/net8.0-windows/win-x64/publish/`.
 
 - If **Ctrl+Alt+V** is already claimed by another application, the app will show an error on startup.
 - Typing into elevated windows (Task Manager, UAC prompts) will not work unless the app itself is run as administrator — this is a Windows security restriction (UIPI).
-- This is a personal vibe coded project. It works for my use case. No guarantees, no support, use at your own risk.
+
+## License
+
+MIT
