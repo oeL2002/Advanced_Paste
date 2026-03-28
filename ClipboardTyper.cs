@@ -24,7 +24,7 @@ internal static class ClipboardTyper
         if (string.IsNullOrEmpty(text))
             return;
 
-        INPUT[] inputs = BuildInputArray(text);
+        NativeMethods.INPUT[] inputs = BuildInputArray(text);
         if (inputs.Length == 0)
             return;
 
@@ -33,16 +33,16 @@ internal static class ClipboardTyper
         for (int offset = 0; offset < inputs.Length; offset += ChunkSize)
         {
             int count = Math.Min(ChunkSize, inputs.Length - offset);
-            INPUT[] chunk = inputs[offset..(offset + count)];
-            NativeMethods.SendInput((uint)count, chunk, cbSize);
+            NativeMethods.INPUT[] chunk = inputs[offset..(offset + count)];
+            _ = NativeMethods.SendInput((uint)count, chunk, cbSize);
         }
     }
 
-    private static INPUT[] BuildInputArray(string text)
+    private static NativeMethods.INPUT[] BuildInputArray(string text)
     {
         // Pre-allocate assuming 2 events per char (keydown + keyup).
         // Surrogate pairs are two chars in a C# string, so they naturally produce 4 events.
-        var list = new List<INPUT>(text.Length * 2);
+        var list = new List<NativeMethods.INPUT>(text.Length * 2);
 
         foreach (char c in text)
         {
@@ -72,12 +72,12 @@ internal static class ClipboardTyper
         return list.ToArray();
     }
 
-    private static INPUT MakeUnicodeInput(char scanCode, bool keyUp)
+    private static NativeMethods.INPUT MakeUnicodeInput(char scanCode, bool keyUp)
     {
         uint flags = NativeMethods.KEYEVENTF_UNICODE;
         if (keyUp) flags |= NativeMethods.KEYEVENTF_KEYUP;
 
-        return new INPUT
+        return new NativeMethods.INPUT
         {
             type = NativeMethods.INPUT_KEYBOARD,
             ki = new NativeMethods.KEYBDINPUT
@@ -91,11 +91,11 @@ internal static class ClipboardTyper
         };
     }
 
-    private static INPUT MakeVkInput(uint vk, bool keyUp)
+    private static NativeMethods.INPUT MakeVkInput(uint vk, bool keyUp)
     {
         uint flags = keyUp ? NativeMethods.KEYEVENTF_KEYUP : 0;
 
-        return new INPUT
+        return new NativeMethods.INPUT
         {
             type = NativeMethods.INPUT_KEYBOARD,
             ki = new NativeMethods.KEYBDINPUT
