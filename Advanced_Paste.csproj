@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>AdvancedPaste</AssemblyName>
     <RootNamespace>AdvancedPaste</RootNamespace>
+    <ApplicationIcon>assets/app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
