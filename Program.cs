@@ -45,7 +45,7 @@ internal sealed class TrayContext : ApplicationContext
 
         _trayIcon = new NotifyIcon
         {
-            Icon             = SystemIcons.Paste,
+            Icon             = SystemIcons.Application,
             Text             = "Advanced Paste  (Ctrl+Alt+V)",
             Visible          = true,
             ContextMenuStrip = menu,
