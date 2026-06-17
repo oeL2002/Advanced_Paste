@@ -41,6 +41,8 @@ internal sealed class TrayContext : ApplicationContext
         var menu = new ContextMenuStrip();
         menu.Items.Add("Advanced Paste", null).Enabled = false;
         menu.Items.Add(new ToolStripSeparator());
+        menu.Items.Add("Type clipboard in 3 s", null, (_, _) => DelayedType());
+        menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Exit", null, (_, _) => Application.Exit());
 
         _trayIcon = new NotifyIcon
@@ -50,6 +52,22 @@ internal sealed class TrayContext : ApplicationContext
             Visible          = true,
             ContextMenuStrip = menu,
         };
+    }
+
+    private void DelayedType()
+    {
+        _trayIcon.ShowBalloonTip(3000, "Advanced Paste",
+            "Click your target window — typing in 3 seconds…",
+            ToolTipIcon.Info);
+
+        var timer = new System.Windows.Forms.Timer { Interval = 3000 };
+        timer.Tick += (_, _) =>
+        {
+            timer.Stop();
+            timer.Dispose();
+            ClipboardTyper.TypeClipboard();
+        };
+        timer.Start();
     }
 
     private static Icon? LoadEmbeddedIcon()
