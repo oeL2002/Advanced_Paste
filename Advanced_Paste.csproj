@@ -8,6 +8,7 @@
     <AssemblyName>AdvancedPaste</AssemblyName>
     <RootNamespace>AdvancedPaste</RootNamespace>
     <ApplicationIcon>assets/app.ico</ApplicationIcon>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup>
