@@ -38,9 +38,21 @@ internal sealed class TrayContext : ApplicationContext
     {
         hotkeyWindow.HotkeyTriggered += (_, _) => ClipboardTyper.TypeClipboard();
 
+        var shortcutToggle = new ToolStripMenuItem("Shortcut (Ctrl+Alt+V)")
+        {
+            CheckOnClick = true,
+            Checked      = true,
+        };
+        shortcutToggle.Click += (_, _) =>
+        {
+            if (shortcutToggle.Checked) hotkeyWindow.Enable();
+            else                        hotkeyWindow.Disable();
+        };
+
         var menu = new ContextMenuStrip();
         menu.Items.Add("Advanced Paste", null).Enabled = false;
         menu.Items.Add(new ToolStripSeparator());
+        menu.Items.Add(shortcutToggle);
         menu.Items.Add("Type clipboard in 3 s", null, (_, _) => DelayedType());
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Exit", null, (_, _) => Application.Exit());
