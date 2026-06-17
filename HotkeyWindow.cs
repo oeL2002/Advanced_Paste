@@ -11,8 +11,12 @@ internal sealed class HotkeyWindow : NativeWindow, IDisposable
 {
     private const int HotkeyId = 1;
 
-    // HWND_MESSAGE = (HWND)-3 — parent value that creates a message-only window
     private static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
+
+    private readonly uint _modifiers = NativeMethods.MOD_CONTROL | NativeMethods.MOD_ALT | NativeMethods.MOD_NOREPEAT;
+    private readonly uint _vk = NativeMethods.VK_V;
+
+    public bool IsEnabled { get; private set; }
 
     public event EventHandler? HotkeyTriggered;
 
@@ -21,11 +25,7 @@ internal sealed class HotkeyWindow : NativeWindow, IDisposable
         var cp = new CreateParams { Parent = HWND_MESSAGE };
         CreateHandle(cp);
 
-        bool registered = NativeMethods.RegisterHotKey(
-            Handle,
-            HotkeyId,
-            NativeMethods.MOD_CONTROL | NativeMethods.MOD_ALT | NativeMethods.MOD_NOREPEAT,
-            NativeMethods.VK_V);
+        bool registered = NativeMethods.RegisterHotKey(Handle, HotkeyId, _modifiers, _vk);
 
         if (!registered)
         {
@@ -35,6 +35,22 @@ internal sealed class HotkeyWindow : NativeWindow, IDisposable
                 $"RegisterHotKey failed (Win32 error {error}). " +
                 "Ctrl+Alt+V may already be claimed by another application.");
         }
+
+        IsEnabled = true;
+    }
+
+    public void Enable()
+    {
+        if (IsEnabled) return;
+        NativeMethods.RegisterHotKey(Handle, HotkeyId, _modifiers, _vk);
+        IsEnabled = true;
+    }
+
+    public void Disable()
+    {
+        if (!IsEnabled) return;
+        NativeMethods.UnregisterHotKey(Handle, HotkeyId);
+        IsEnabled = false;
     }
 
     protected override void WndProc(ref Message m)
