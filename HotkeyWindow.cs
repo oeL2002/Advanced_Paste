@@ -13,7 +13,8 @@ internal sealed class HotkeyWindow : NativeWindow, IDisposable
 
     private static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
 
-    private readonly uint _modifiers = NativeMethods.MOD_CONTROL | NativeMethods.MOD_ALT | NativeMethods.MOD_NOREPEAT;
+    private readonly uint _modifiers =
+        NativeMethods.MOD_CONTROL | NativeMethods.MOD_ALT | NativeMethods.MOD_NOREPEAT;
     private readonly uint _vk = NativeMethods.VK_V;
 
     public bool IsEnabled { get; private set; }
@@ -32,8 +33,9 @@ internal sealed class HotkeyWindow : NativeWindow, IDisposable
             int error = Marshal.GetLastWin32Error();
             DestroyHandle();
             throw new InvalidOperationException(
-                $"RegisterHotKey failed (Win32 error {error}). " +
-                "Ctrl+Alt+V may already be claimed by another application.");
+                $"RegisterHotKey failed (Win32 error {error}). "
+                    + "Ctrl+Alt+V may already be claimed by another application."
+            );
         }
 
         IsEnabled = true;
@@ -41,14 +43,16 @@ internal sealed class HotkeyWindow : NativeWindow, IDisposable
 
     public void Enable()
     {
-        if (IsEnabled) return;
+        if (IsEnabled)
+            return;
         NativeMethods.RegisterHotKey(Handle, HotkeyId, _modifiers, _vk);
         IsEnabled = true;
     }
 
     public void Disable()
     {
-        if (!IsEnabled) return;
+        if (!IsEnabled)
+            return;
         NativeMethods.UnregisterHotKey(Handle, HotkeyId);
         IsEnabled = false;
     }
