@@ -17,8 +17,12 @@ internal static class Program
         }
         catch (InvalidOperationException ex)
         {
-            MessageBox.Show(ex.Message, "Advanced Paste — startup error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(
+                ex.Message,
+                "Advanced Paste — startup error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+            );
             return;
         }
 
@@ -41,12 +45,14 @@ internal sealed class TrayContext : ApplicationContext
         var shortcutToggle = new ToolStripMenuItem("Shortcut (Ctrl+Alt+V)")
         {
             CheckOnClick = true,
-            Checked      = true,
+            Checked = true,
         };
         shortcutToggle.Click += (_, _) =>
         {
-            if (shortcutToggle.Checked) hotkeyWindow.Enable();
-            else                        hotkeyWindow.Disable();
+            if (shortcutToggle.Checked)
+                hotkeyWindow.Enable();
+            else
+                hotkeyWindow.Disable();
         };
 
         var menu = new ContextMenuStrip();
@@ -59,18 +65,21 @@ internal sealed class TrayContext : ApplicationContext
 
         _trayIcon = new NotifyIcon
         {
-            Icon             = LoadEmbeddedIcon() ?? SystemIcons.Application,
-            Text             = "Advanced Paste  (Ctrl+Alt+V)",
-            Visible          = true,
+            Icon = LoadEmbeddedIcon() ?? SystemIcons.Application,
+            Text = "Advanced Paste  (Ctrl+Alt+V)",
+            Visible = true,
             ContextMenuStrip = menu,
         };
     }
 
     private void DelayedType()
     {
-        _trayIcon.ShowBalloonTip(3000, "Advanced Paste",
+        _trayIcon.ShowBalloonTip(
+            3000,
+            "Advanced Paste",
             "Click your target window — typing in 3 seconds…",
-            ToolTipIcon.Info);
+            ToolTipIcon.Info
+        );
 
         var timer = new System.Windows.Forms.Timer { Interval = 3000 };
         timer.Tick += (_, _) =>

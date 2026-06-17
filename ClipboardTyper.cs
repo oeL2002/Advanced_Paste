@@ -75,19 +75,20 @@ internal static class ClipboardTyper
     private static NativeMethods.INPUT MakeUnicodeInput(char scanCode, bool keyUp)
     {
         uint flags = NativeMethods.KEYEVENTF_UNICODE;
-        if (keyUp) flags |= NativeMethods.KEYEVENTF_KEYUP;
+        if (keyUp)
+            flags |= NativeMethods.KEYEVENTF_KEYUP;
 
         return new NativeMethods.INPUT
         {
             type = NativeMethods.INPUT_KEYBOARD,
             ki = new NativeMethods.KEYBDINPUT
             {
-                wVk         = 0,
-                wScan       = scanCode,
-                dwFlags     = flags,
-                time        = 0,
-                dwExtraInfo = NativeMethods.GetMessageExtraInfo()
-            }
+                wVk = 0,
+                wScan = scanCode,
+                dwFlags = flags,
+                time = 0,
+                dwExtraInfo = NativeMethods.GetMessageExtraInfo(),
+            },
         };
     }
 
@@ -100,12 +101,12 @@ internal static class ClipboardTyper
             type = NativeMethods.INPUT_KEYBOARD,
             ki = new NativeMethods.KEYBDINPUT
             {
-                wVk         = (ushort)vk,
-                wScan       = 0,
-                dwFlags     = flags,
-                time        = 0,
-                dwExtraInfo = NativeMethods.GetMessageExtraInfo()
-            }
+                wVk = (ushort)vk,
+                wScan = 0,
+                dwFlags = flags,
+                time = 0,
+                dwExtraInfo = NativeMethods.GetMessageExtraInfo(),
+            },
         };
     }
 }
